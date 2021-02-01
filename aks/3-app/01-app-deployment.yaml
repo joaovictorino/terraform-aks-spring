@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app
+  name: app
+  namespace: aulainfra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - image: aulainfra.azurecr.io/springapp:v1
+        imagePullPolicy: Always
+        name: backend
+        env:
+          - name: TZ
+            valueFrom:
+              configMapKeyRef:
+                name: app-configmap
+                key: TZ
+        ports:
+          - containerPort: 80
+        readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+status: {}

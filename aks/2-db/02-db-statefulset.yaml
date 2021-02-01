@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: db
+  name: db
+  namespace: aulainfra
+spec:
+  selector:
+    matchLabels:
+      app: db
+  serviceName: "db"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          valueFrom: 
+            configMapKeyRef:
+              name: db-configmap
+              key: MYSQL_DATABASE
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: db-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_TCP_PORT
+          valueFrom: 
+            configMapKeyRef:
+              name: db-configmap
+              key: MYSQL_TCP_PORT
+        - name: TZ
+          valueFrom: 
+            configMapKeyRef:
+              name: app-configmap
+              key: TZ
+        image: mysql:8.0
+        imagePullPolicy: Always
+        name: db
+        ports:
+          - containerPort: 3306
+        readinessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 10
+            periodSeconds: 20
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: db-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: db-claim
+      namespace: aulainfra
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "default"
+      resources:
+        requests:
+          storage: 10Gi
