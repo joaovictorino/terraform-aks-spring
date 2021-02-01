@@ -10,6 +10,8 @@ terraform apply
 
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 
+docker build -t springapp .
+
 docker tag springapp:latest aulainfra.azurecr.io/springapp:v1
 
 az acr login --name aulainfra
