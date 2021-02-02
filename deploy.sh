@@ -6,18 +6,30 @@ cd terraform
 
 terraform init
 
+terraform plan
+
 terraform apply
 
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 
-docker build -t springapp .
-
-docker tag springapp:latest aulainfra.azurecr.io/springapp:v1
-
-az acr login --name aulainfra
-
-docker push aulainfra.azurecr.io/springapp:v1
-
 cd ..
 
-kubectl apply -f aks
+docker build -t springapp .
+
+docker tag springapp:latest aulainfraacr.azurecr.io/springapp:v1
+
+docker tag springapp:latest aulainfraacr.azurecr.io/springapp:latest
+
+az acr login --name aulainfraacr
+
+docker push aulainfraacr.azurecr.io/springapp:v1
+
+docker push aulainfraacr.azurecr.io/springapp:latest
+
+kubectl apply -f aks/1-config
+
+kubectl apply -f aks/2-db
+
+kubectl apply -f aks/3-app
+
+kubectl apply -f aks/4-ingress

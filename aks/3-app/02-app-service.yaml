@@ -1,13 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: springapp
   name: app
   namespace: aulainfra
 spec:
+  type: LoadBalancer
   ports:
   - name: "80"
     port: 80
-    targetPort: 80
+    targetPort: 8080
   selector:
     app: app
     

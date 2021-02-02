@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: db
-  name: db
+    app: mysqldb
+  name: mysqldb
   namespace: aulainfra
 spec:
   selector:
     matchLabels:
-      app: db
-  serviceName: "db"
+      app: mysqldb
+  serviceName: "mysqldb"
   replicas: 1
   template:
     metadata:
       labels:
-        app: db
+        app: mysqldb
     spec:
       terminationGracePeriodSeconds: 20
       containers:
@@ -26,8 +26,8 @@ spec:
               key: MYSQL_DATABASE
         - name: MYSQL_ROOT_PASSWORD
           valueFrom: 
-            secretKeyRef:
-              name: db-secret
+            configMapKeyRef:
+              name: db-configmap
               key: MYSQL_ROOT_PASSWORD
         - name: MYSQL_TCP_PORT
           valueFrom: 
@@ -41,7 +41,7 @@ spec:
               key: TZ
         image: mysql:8.0
         imagePullPolicy: Always
-        name: db
+        name: mysqldb
         ports:
           - containerPort: 3306
         readinessProbe:
