@@ -31,5 +31,3 @@ kubectl apply -f aks/1-config
 kubectl apply -f aks/2-db
 
 kubectl apply -f aks/3-app
-
-kubectl apply -f aks/4-ingress
