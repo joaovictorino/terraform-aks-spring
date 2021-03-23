@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     service.beta.kubernetes.io/azure-dns-label-name: springapp
-  name: app
+  name: app-svc
   namespace: aulainfra
 spec:
   type: LoadBalancer

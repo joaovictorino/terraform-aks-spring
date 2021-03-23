@@ -10,4 +10,4 @@ spec:
     protocol: TCP
     targetPort: 3306
   selector:
-    app: mysqldb
+    app: mysqldb-stfs

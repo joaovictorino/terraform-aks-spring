@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: mysqldb
-  name: mysqldb
+    app: mysqldb-stfs
+  name: mysqldb-stfs
   namespace: aulainfra
 spec:
   selector:
     matchLabels:
-      app: mysqldb
-  serviceName: "mysqldb"
+      app: mysqldb-stfs
+  serviceName: "mysqldb-stfs"
   replicas: 1
   template:
     metadata:
       labels:
-        app: mysqldb
+        app: mysqldb-stfs
     spec:
       terminationGracePeriodSeconds: 20
       containers:
@@ -41,7 +41,7 @@ spec:
               key: TZ
         image: mysql:8.0
         imagePullPolicy: Always
-        name: mysqldb
+        name: mysqldb-stfs
         ports:
           - containerPort: 3306
         readinessProbe:
