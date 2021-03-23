@@ -34,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
 
   addon_profile {
-    kube_dashboard {
+    http_application_routing {
       enabled = true
     }
   }
