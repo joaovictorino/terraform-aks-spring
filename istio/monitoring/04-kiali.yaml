@@ -1583,3 +1583,33 @@ spec:
       spans: 6
       metricName: "vertx_http_server_bytesReceived"
       dataType: "histogram"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kiali-external
+  namespace: istio-system
+  labels:
+    helm.sh/chart: kiali-server-1.31.0
+    app: kiali
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/instance: kiali-server
+    version: "v1.31.0"
+    app.kubernetes.io/version: "v1.31.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: "kiali"
+  annotations:
+    kiali.io/api-spec: https://kiali.io/api
+    kiali.io/api-type: rest
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    protocol: TCP
+    port: 20001
+  - name: http-metrics
+    protocol: TCP
+    port: 9090
+  selector:
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/instance: kiali-server
