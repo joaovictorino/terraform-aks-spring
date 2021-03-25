@@ -108,6 +108,8 @@ data:
     external_services:
       custom_dashboards:
         enabled: true
+      grafana:
+        in_cluster_url: "http://grafana.istio-system:3000"
     identity:
       cert_file: ""
       private_key_file: ""
