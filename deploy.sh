@@ -18,22 +18,14 @@ terraform apply
 # obter credenciais do AKS
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 
-cd ..
-
 # compilar imagem
 docker build -t springapp .
-
-# taggear a imagem
-docker tag springapp:latest aulainfraacr.azurecr.io/springapp:v1
 
 # taggear a imagem com latest
 docker tag springapp:latest aulainfraacr.azurecr.io/springapp:latest
 
 # login no repositorio de imagem do Azure (privado)
 az acr login --name aulainfraacr
-
-# subir imagem
-docker push aulainfraacr.azurecr.io/springapp:v1
 
 # subir imagem
 docker push aulainfraacr.azurecr.io/springapp:latest
