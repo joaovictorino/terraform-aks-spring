@@ -15,9 +15,6 @@ terraform plan
 # alterar ambiente
 terraform apply
 
-# obter credenciais do AKS
-az aks get-credentials --resource-group rg-aulainfra --name teste-aks
-
 # compilar imagem
 docker build -t springapp .
 
@@ -29,6 +26,9 @@ az acr login --name aulainfraacr
 
 # subir imagem
 docker push aulainfraacr.azurecr.io/springapp:latest
+
+# obter credenciais do AKS
+az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 
 # subir configuração da aplicação
 kubectl apply -f aks/1-config
