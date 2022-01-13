@@ -21,7 +21,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: aulainfraacr.azurecr.io/springapp
+      - image: aulainfraacrk.azurecr.io/springapp
         imagePullPolicy: Always
         name: backend
         env:
