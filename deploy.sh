@@ -22,7 +22,7 @@ docker build -t springapp .
 docker tag springapp:latest aulainfraacrk.azurecr.io/springapp:latest
 
 # login no repositorio de imagem do Azure (privado)
-az acr login --name aulainfraacr
+az acr login --name aulainfraacrk
 
 # subir imagem
 docker push aulainfraacrk.azurecr.io/springapp:latest
