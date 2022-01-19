@@ -4,10 +4,11 @@ metadata:
   name: mysqldb
   namespace: aulainfra
 spec:
+  type: ClusterIP
   ports:
-  - name: "3306"
-    port: 3306
-    protocol: TCP
-    targetPort: 3306
+    - name: "3306"
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
   selector:
     app: mysqldb-stfs
