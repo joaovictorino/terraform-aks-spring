@@ -3,11 +3,9 @@ kind: StatefulSet
 metadata:
   name: es-cluster
   namespace: kube-logging
-  labels:
-    app: elasticsearch
 spec:
   serviceName: elasticsearch
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: elasticsearch
@@ -18,7 +16,7 @@ spec:
     spec:
       containers:
       - name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
         resources:
             limits:
               cpu: 1000m
@@ -35,14 +33,19 @@ spec:
         - name: data
           mountPath: /usr/share/elasticsearch/data
         env:
-          - name: discovery.type
-            value: single-node
+          - name: cluster.name
+            value: k8s-logs
+          - name: node.name
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: discovery.seed_hosts
+            value: "es-cluster-0.elasticsearch,es-cluster-1.elasticsearch,es-cluster-2.elasticsearch"
+          - name: cluster.initial_master_nodes
+            value: "es-cluster-0,es-cluster-1,es-cluster-2"
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx512m"
       initContainers:
-      - image: alpine:3.6
-        command: ["/sbin/sysctl", "-w", "vm.max_map_count=262144"]
-        name: elasticsearch-logging-init
-        securityContext:
-          privileged: true
       - name: fix-permissions
         image: busybox
         command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
@@ -51,6 +54,16 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      - name: increase-fd-ulimit
+        image: busybox
+        command: ["sh", "-c", "ulimit -n 65536"]
+        securityContext:
+          privileged: true
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -61,4 +74,4 @@ spec:
       storageClassName: default
       resources:
         requests:
-          storage: 10Gi
+          storage: 100Gi

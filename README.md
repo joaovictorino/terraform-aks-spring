@@ -44,13 +44,6 @@ Obter credenciais do AKS
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 ````
 
-Subir configuração da aplicação
-````sh
-kubectl apply -f aks/1-config
-kubectl apply -f aks/2-db
-kubectl apply -f aks/3-app
-````
-
 Instalar ElasticSearch
 ````sh
 kubectl apply -f efk/01-namespace.yaml
@@ -68,6 +61,13 @@ Instalar Kibana
 ````sh
 kubectl apply -f efk/06-kibana-svc.yaml
 kubectl apply -f efk/07-kibana-deployment.yaml
+````
+
+Subir configuração da aplicação
+````sh
+kubectl apply -f aks/1-config
+kubectl apply -f aks/2-db
+kubectl apply -f aks/3-app
 ````
 
 Acessar Kibana
