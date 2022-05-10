@@ -23,7 +23,7 @@ az acr login --name aulainfraacrk
 docker push aulainfraacrk.azurecr.io/springapp:latest
 
 # obter credenciais do AKS
-az aks get-credentials --resource-group rg-aulainfra --name teste-aks  --overwrite-existing
+az aks get-credentials --resource-group rg-aulainfra --name teste-aks --overwrite-existing
 
 # instalar EFK
 kubectl apply -f efk/01-namespace.yaml
@@ -44,4 +44,5 @@ kubectl apply -f aks/2-db
 kubectl apply -f aks/3-app
 
 # kubectl port-forward --namespace kube-logging svc/kibana 5601:5601
+# kubectl port-forward --namespace kube-logging svc/elasticsearch 9200:9200
 # curl http://springpetapp.eastus.cloudapp.azure.com/
