@@ -39,4 +39,4 @@ kubectl apply -f aks/2-db
 # subir configuração da aplicação
 kubectl apply -f aks/3-app
 
-URL http://springapp.eastus.cloudapp.azure.com/
+URL http://springpetapp.eastus.cloudapp.azure.com/

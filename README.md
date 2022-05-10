@@ -53,5 +53,5 @@ kubectl apply -f aks/3-app
 
 Acessar a aplicação
 ````sh
-curl http://springapp.eastus.cloudapp.azure.com/
+curl http://springpetapp.eastus.cloudapp.azure.com/
 ````
