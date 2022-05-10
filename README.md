@@ -51,6 +51,30 @@ kubectl apply -f aks/2-db
 kubectl apply -f aks/3-app
 ````
 
+Instalar ElasticSearch
+````sh
+kubectl apply -f efk/01-namespace.yaml
+kubectl apply -f efk/02-elastic-svc.yaml
+kubectl apply -f efk/03-elastic-stateful.yaml
+````
+
+Instalar Fluentd
+````sh
+kubectl apply -f efk/04-fluentd-security.yaml
+kubectl apply -f efk/05-fluentd-daemon.yaml
+````
+
+Instalar Kibana
+````sh
+kubectl apply -f efk/06-kibana-svc.yaml
+kubectl apply -f efk/07-kibana-deployment.yaml
+````
+
+Acessar Kibana
+````sh
+kubectl port-forward --namespace kube-logging svc/kibana 5601:5601
+````
+
 Acessar a aplicação
 ````sh
 curl http://springpetapp.eastus.cloudapp.azure.com/
