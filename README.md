@@ -47,20 +47,17 @@ az aks get-credentials --resource-group rg-aulainfra --name teste-aks
 Instalar ElasticSearch
 ````sh
 kubectl apply -f efk/01-namespace.yaml
-kubectl apply -f efk/02-elastic-svc.yaml
-kubectl apply -f efk/03-elastic-stateful.yaml
-````
-
-Instalar Fluentd
-````sh
-kubectl apply -f efk/04-fluentd-security.yaml
-kubectl apply -f efk/05-fluentd-daemon.yaml
+kubectl apply -f efk/02-elastic.yaml
 ````
 
 Instalar Kibana
 ````sh
-kubectl apply -f efk/06-kibana-svc.yaml
-kubectl apply -f efk/07-kibana-deployment.yaml
+kubectl apply -f efk/03-kibana.yaml
+````
+
+Instalar FileBeat
+````sh
+kubectl apply -f efk/04-filebeat.yaml
 ````
 
 Subir configuração da aplicação
@@ -70,9 +67,11 @@ kubectl apply -f aks/2-db
 kubectl apply -f aks/3-app
 ````
 
-Acessar Kibana
+Acessar Kibana e Elastic
 ````sh
-kubectl port-forward --namespace kube-logging svc/kibana 5601:5601
+kubectl port-forward deployment/kibana 5601 -n kube-logging
+kubectl port-forward sts/elasticsearch-master 9200 -n kube-logging
+curl http://localhost:9200/_cat/indices?v
 ````
 
 Acessar a aplicação

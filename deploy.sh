@@ -25,24 +25,23 @@ docker push aulainfraacrk.azurecr.io/springapp:latest
 # obter credenciais do AKS
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks --overwrite-existing
 
-# instalar EFK
+# instalar Elastic Stack
 kubectl apply -f efk/01-namespace.yaml
-kubectl apply -f efk/02-elastic-svc.yaml
-kubectl apply -f efk/03-elastic-stateful.yaml
-kubectl apply -f efk/04-fluentd-security.yaml
-kubectl apply -f efk/05-fluentd-daemon.yaml
-kubectl apply -f efk/06-kibana-svc.yaml
-kubectl apply -f efk/07-kibana-deployment.yaml
+kubectl apply -f efk/02-elastic.yaml
+
+sleep 30
+
+kubectl apply -f efk/03-kibana.yaml
+kubectl apply -f efk/04-filebeat.yaml
+
+sleep 30
 
 # subir configuração da aplicação
 kubectl apply -f aks/1-config
-
-# subir configuração da aplicação
 kubectl apply -f aks/2-db
-
-# subir configuração da aplicação
 kubectl apply -f aks/3-app
 
-# kubectl port-forward --namespace kube-logging svc/kibana 5601:5601
-# kubectl port-forward --namespace kube-logging svc/elasticsearch 9200:9200
+# kubectl port-forward deployment/kibana 5601 -n kube-logging
+# kubectl port-forward sts/elasticsearch-master 9200 -n kube-logging
+# curl http://localhost:9200/_cat/indices?v
 # curl http://springpetapp.eastus.cloudapp.azure.com/
