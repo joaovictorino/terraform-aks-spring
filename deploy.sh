@@ -26,15 +26,15 @@ docker push aulainfraacrk.azurecr.io/springapp:latest
 az aks get-credentials --resource-group rg-aulainfra --name teste-aks --overwrite-existing
 
 # instalar Elastic Stack
-kubectl apply -f efk/01-namespace.yaml
-kubectl apply -f efk/02-elastic.yaml
+kubectl apply -f elastic/01-namespace.yaml
+kubectl apply -f elastic/02-elastic.yaml
 
-sleep 30
+sleep 180
 
-kubectl apply -f efk/03-kibana.yaml
-kubectl apply -f efk/04-filebeat.yaml
+kubectl apply -f elastic/03-kibana.yaml
+kubectl apply -f elastic/04-filebeat.yaml
 
-sleep 30
+sleep 60
 
 # subir configuração da aplicação
 kubectl apply -f aks/1-config
