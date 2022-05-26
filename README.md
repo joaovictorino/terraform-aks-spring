@@ -9,6 +9,11 @@ Logar no Azure via az-cli, o navegador será aberto para que o login seja feito
 az login
 ````
 
+Criar RBAC para acesso do AKS no Registry Docker, colocar no arquivo tfvars na primeira execução
+````sh
+az ad sp create-for-rbac
+````
+
 Inicializar o Terraform
 ````sh
 terraform init
