@@ -44,4 +44,4 @@ kubectl apply -f aks/3-app
 # kubectl port-forward deployment/kibana 5601 -n kube-logging
 # kubectl port-forward sts/elasticsearch-master 9200 -n kube-logging
 # curl http://localhost:9200/_cat/indices?v
-# curl http://springpetapp.eastus.cloudapp.azure.com/
+# curl http://springpetapp.westus.cloudapp.azure.com/
