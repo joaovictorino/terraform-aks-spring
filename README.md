@@ -31,22 +31,22 @@ docker build -t springapp .
 
 Taggear a imagem com latest
 ````sh
-docker tag springapp:latest aulainfraacrk.azurecr.io/springapp:latest
+docker tag springapp:latest springinfraacrk.azurecr.io/springapp:latest
 ````
 
 Login no repositorio de imagem do Azure (privado)
 ````sh
-az acr login --name aulainfraacrk
+az acr login --name springinfraacrk
 ````
 
 Subir imagem
 ````sh
-docker push aulainfraacrk.azurecr.io/springapp:latest
+docker push springinfraacrk.azurecr.io/springapp:latest
 ````
 
 Obter credenciais do AKS
 ````sh
-az aks get-credentials --resource-group rg-aulainfra --name teste-aks
+az aks get-credentials --resource-group rg-springinfra --name teste-aks
 ````
 
 Instalar ElasticSearch
@@ -81,5 +81,5 @@ curl http://localhost:9200/_cat/indices?v
 
 Acessar a aplicação
 ````sh
-curl http://springpetapp.eastus.cloudapp.azure.com/
+curl http://springpetapp.westus.cloudapp.azure.com/
 ````
