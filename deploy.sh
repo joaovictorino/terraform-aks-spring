@@ -14,16 +14,16 @@ cd ..
 docker build -t springapp .
 
 # taggear a imagem com latest
-docker tag springapp:latest aulainfraacrk.azurecr.io/springapp:latest
+docker tag springapp:latest springinfraacrk.azurecr.io/springapp:latest
 
 # login no repositorio de imagem do Azure (privado)
-az acr login --name aulainfraacrk
+az acr login --name springinfraacrk
 
 # subir imagem
-docker push aulainfraacrk.azurecr.io/springapp:latest
+docker push springinfraacrk.azurecr.io/springapp:latest
 
 # obter credenciais do AKS
-az aks get-credentials --resource-group rg-aulainfra --name teste-aks --overwrite-existing
+az aks get-credentials --resource-group rg-springinfra --name teste-aks --overwrite-existing
 
 # instalar Elastic Stack
 kubectl apply -f elastic/01-namespace.yaml
