@@ -1,85 +1,101 @@
-# Terraform e Ansible criando Azure Kubernetes Service (AKS)
+# Terraform criando Azure Kubernetes Service (AKS)
 
 Pré-requisitos
+
 - Az-cli instalado
 - Terraform instalado
 
 Logar no Azure via az-cli, o navegador será aberto para que o login seja feito
-````sh
+
+```sh
 az login
-````
+```
 
 Criar RBAC para acesso do AKS no Registry Docker, colocar no arquivo tfvars na primeira execução
-````sh
+
+```sh
 az ad sp create-for-rbac
-````
+```
 
 Inicializar o Terraform
-````sh
+
+```sh
 terraform init
-````
+```
 
 Executar o Terraform
-````sh
+
+```sh
 terraform apply -auto-approve
-````
+```
 
 Compilar imagem
-````sh
+
+```sh
 docker build -t springapp .
-````
+```
 
 Taggear a imagem com latest
-````sh
+
+```sh
 docker tag springapp:latest springinfraacrk.azurecr.io/springapp:latest
-````
+```
 
 Login no repositorio de imagem do Azure (privado)
-````sh
+
+```sh
 az acr login --name springinfraacrk
-````
+```
 
 Subir imagem
-````sh
+
+```sh
 docker push springinfraacrk.azurecr.io/springapp:latest
-````
+```
 
 Obter credenciais do AKS
-````sh
+
+```sh
 az aks get-credentials --resource-group rg-springinfra --name teste-aks
-````
+```
 
 Instalar ElasticSearch
-````sh
-kubectl apply -f efk/01-namespace.yaml
-kubectl apply -f efk/02-elastic.yaml
-````
+
+```sh
+kubectl apply -f elastic/01-namespace.yaml
+kubectl apply -f elastic/02-elastic.yaml
+```
 
 Instalar Kibana
-````sh
-kubectl apply -f efk/03-kibana.yaml
-````
+
+```sh
+kubectl apply -f elastic/03-kibana.yaml
+```
 
 Instalar FileBeat
-````sh
-kubectl apply -f efk/04-filebeat.yaml
-````
+
+```sh
+kubectl apply -f elastic/04-filebeat.yaml
+```
 
 Subir configuração da aplicação
-````sh
+
+```sh
 kubectl apply -f aks/1-config
 kubectl apply -f aks/2-db
 kubectl apply -f aks/3-app
-````
+```
 
 Acessar Kibana e Elastic
-````sh
+
+```sh
 kubectl port-forward deployment/kibana 5601 -n kube-logging
 kubectl port-forward sts/elasticsearch-master 9200 -n kube-logging
 curl http://localhost:9200/_cat/indices?v
-````
+```
 
 Acessar a aplicação
-````sh
+
+```sh
 curl http://springpetapp.westus.cloudapp.azure.com/
-````
+```
