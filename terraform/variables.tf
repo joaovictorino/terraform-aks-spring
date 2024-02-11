@@ -8,4 +8,5 @@ variable "password" {
 
 variable "project_name" {
   description = "Project name"
+  default = "springinfra"
 }
