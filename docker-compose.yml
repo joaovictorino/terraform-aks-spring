@@ -1,5 +1,3 @@
-version: '3'
-
 networks:
   petclinic:
     driver: bridge
@@ -24,3 +22,4 @@ services:
       - 8080:8080
     depends_on:
       - mysqldb
+

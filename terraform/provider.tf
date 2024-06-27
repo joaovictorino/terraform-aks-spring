@@ -16,28 +16,28 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg" {
   name     = "rg-${var.project_name}"
-  location = "West US"
+  location = "eastus"
 }
 
-module registry {
+module "registry" {
   source = "./registry"
 
-  azurerm_resource_group_name = azurerm_resource_group.rg.name
+  azurerm_resource_group_name     = azurerm_resource_group.rg.name
   azurerm_resource_group_location = azurerm_resource_group.rg.location
-  project_name = var.project_name
+  project_name                    = var.project_name
 }
 
-module cluster {
+module "cluster" {
   source = "./cluster"
 
-  azurerm_resource_group_name = azurerm_resource_group.rg.name
+  azurerm_resource_group_name     = azurerm_resource_group.rg.name
   azurerm_resource_group_location = azurerm_resource_group.rg.location
-  appId = var.appId
-  password = var.password
+  appId                           = var.appId
+  password                        = var.password
 }
 
 data "azuread_service_principal" "aks_principal" {
-  application_id = var.appId
+  client_id = var.appId
 }
 
 resource "azurerm_role_assignment" "acrpull_role" {
@@ -46,3 +46,4 @@ resource "azurerm_role_assignment" "acrpull_role" {
   principal_id                     = data.azuread_service_principal.aks_principal.id
   skip_service_principal_aad_check = true
 }
+
